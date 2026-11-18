@@ -1,4 +1,9 @@
 from datetime import date
+TAX_MULTIPLIERS = {
+    "food": 1.05,
+    "transport": 1.10,
+    "entertainment": 1.20,
+}
 
 
 class Expense:
@@ -41,26 +46,12 @@ class ExpenseTracker:
     def total_by_category(self, category):
         return sum(e.amount for e in self.expenses if e.category == category)
 
+    def final_amount(self, e):
+        return e.amount * TAX_MULTIPLIERS.get(e.category, 1.0)
+
     def total_with_tax(self):
-        total = 0
-        for e in self.expenses:
-            if e.category == "food":
-                total += e.amount * 1.05
-            elif e.category == "transport":
-                total += e.amount * 1.10
-            elif e.category == "entertainment":
-                total += e.amount * 1.20
-            else:
-                total += e.amount
-        return total
+        return sum(self.final_amount(e) for e in self.expenses)
 
     def format_expense(self, e):
-        if e.category == "food":
-            final = e.amount * 1.05
-        elif e.category == "transport":
-            final = e.amount * 1.10
-        elif e.category == "entertainment":
-            final = e.amount * 1.20
-        else:
-            final = e.amount
+        final = self.final_amount(e)
         return f"{e.date} | {e.category:<14} | {e.amount:>8.2f} | with tax: {final:>8.2f} | {e.description}"
