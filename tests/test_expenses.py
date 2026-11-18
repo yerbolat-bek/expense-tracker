@@ -38,3 +38,28 @@ def test_save_and_load(tmp_path):
     storage.save(make_tracker(), str(path))
     loaded = storage.load(str(path))
     assert loaded.total() == 180
+
+import pytest
+
+
+@pytest.mark.parametrize(
+    "category, expected",
+    [
+        ("food", 105.00),
+        ("transport", 110.00),
+        ("entertainment", 120.00),
+        ("other", 100.00),
+    ],
+)
+def test_tax_rates_per_category(category, expected):
+    t = ExpenseTracker()
+    t.add(100, category)
+    assert round(t.total_with_tax(), 2) == expected
+
+
+def test_format_expense_contains_taxed_amount():
+    t = ExpenseTracker()
+    e = t.add(100, "food", "2026-01-01", "lunch")
+    line = t.format_expense(e)
+    assert "105.00" in line
+    assert "lunch" in line
