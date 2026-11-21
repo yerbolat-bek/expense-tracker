@@ -1,6 +1,6 @@
 import math
-
 from datetime import date
+
 TAX_MULTIPLIERS = {
     "food": 1.05,
     "transport": 1.10,

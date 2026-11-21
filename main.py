@@ -1,6 +1,8 @@
 import os
+
 import storage
 from expenses import ExpenseTracker, validate_amount
+
 
 def main():
     if os.path.exists(storage.DEFAULT_FILE):
