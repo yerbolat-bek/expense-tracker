@@ -80,3 +80,20 @@ def test_add_accepts_positive_float():
     t = ExpenseTracker()
     t.add(19.99, "food")
     assert t.total() == 19.99
+
+
+def test_failed_save_keeps_previous_file(tmp_path, monkeypatch):
+    path = tmp_path / "data.json"
+    storage.save(make_tracker(), str(path))
+    before = path.read_text()
+
+    def failing_dump(obj, fp, *args, **kwargs):
+        fp.write("[{partial")
+        raise OSError("disk full")
+
+    monkeypatch.setattr(storage.json, "dump", failing_dump)
+    with pytest.raises(OSError):
+        storage.save(make_tracker(), str(path))
+
+    assert path.read_text() == before
+    assert list(tmp_path.iterdir()) == [path]
