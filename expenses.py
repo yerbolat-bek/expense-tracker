@@ -8,8 +8,9 @@ TAX_MULTIPLIERS = {
 }
 
 def validate_amount(amount):
+    # One exception type (ValueError) for every invalid amount keeps callers simple.
     if isinstance(amount, bool) or not isinstance(amount, (int, float)):
-        raise ValueError(f"amount must be a number, got {amount!r}")
+        raise ValueError(f"amount must be a number, got {amount!r}")  # noqa: TRY004
     if not math.isfinite(amount) or amount <= 0:
         raise ValueError(f"amount must be a positive finite number, got {amount!r}")
     return amount

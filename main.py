@@ -15,8 +15,8 @@ def main():
         if choice == "1":
             try:
                 amount = validate_amount(float(input("Amount: ")))
-            except ValueError as e:
-                print("Invalid amount:", e)
+            except ValueError as err:
+                print("Invalid amount:", err)
                 continue
             category = input("Category (food/transport/entertainment/other): ")
             description = input("Description: ")
