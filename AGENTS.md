@@ -1,4 +1,4 @@
-# AGENTS.md
+﻿# AGENTS.md
 
 ## Purpose
 Console expense tracker (Python). Users add expenses with amount and
@@ -21,7 +21,7 @@ Always work inside the venv. Never install packages globally.
 ## Safe commands (allowed without asking)
     pytest -v
     ruff check .
-    mypy expenses.py storage.py main.py
+    mypy --check-untyped-defs expenses.py storage.py main.py
     python -m compileall -q expenses.py storage.py main.py
     git status
     git diff
