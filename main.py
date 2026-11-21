@@ -1,7 +1,6 @@
 import os
 import storage
-from expenses import ExpenseTracker
-
+from expenses import ExpenseTracker, validate_amount
 
 def main():
     if os.path.exists(storage.DEFAULT_FILE):
@@ -14,7 +13,11 @@ def main():
         choice = input("> ")
 
         if choice == "1":
-            amount = float(input("Amount: "))
+            try:
+                amount = validate_amount(float(input("Amount: ")))
+            except ValueError as e:
+                print("Invalid amount:", e)
+                continue
             category = input("Category (food/transport/entertainment/other): ")
             description = input("Description: ")
             tracker.add(amount, category, description=description)

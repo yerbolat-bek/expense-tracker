@@ -1,3 +1,5 @@
+import pytest
+
 import sys, os
 sys.path.insert(0, os.path.dirname(os.path.dirname(__file__)))
 
@@ -63,3 +65,18 @@ def test_format_expense_contains_taxed_amount():
     line = t.format_expense(e)
     assert "105.00" in line
     assert "lunch" in line
+
+@pytest.mark.parametrize(
+    "bad", [-500, 0, float("nan"), float("inf"), float("-inf"), "abc", None, True]
+)
+def test_add_rejects_invalid_amount(bad):
+    t = ExpenseTracker()
+    with pytest.raises(ValueError):
+        t.add(bad, "food")
+    assert t.expenses == []
+
+
+def test_add_accepts_positive_float():
+    t = ExpenseTracker()
+    t.add(19.99, "food")
+    assert t.total() == 19.99

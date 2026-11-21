@@ -1,3 +1,5 @@
+import math
+
 from datetime import date
 TAX_MULTIPLIERS = {
     "food": 1.05,
@@ -5,10 +7,17 @@ TAX_MULTIPLIERS = {
     "entertainment": 1.20,
 }
 
+def validate_amount(amount):
+    if isinstance(amount, bool) or not isinstance(amount, (int, float)):
+        raise ValueError(f"amount must be a number, got {amount!r}")
+    if not math.isfinite(amount) or amount <= 0:
+        raise ValueError(f"amount must be a positive finite number, got {amount!r}")
+    return amount
+
 
 class Expense:
     def __init__(self, amount, category, expense_date=None, description=""):
-        self.amount = amount
+        self.amount = validate_amount(amount)
         self.category = category
         self.date = expense_date or date.today().isoformat()
         self.description = description
