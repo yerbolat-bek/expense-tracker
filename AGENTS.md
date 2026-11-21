@@ -66,7 +66,14 @@ Always work inside the venv. Never install packages globally.
 - Agent must summarize: files changed, tests run, results, open risks.
 
 ## Known issues (observed, not yet fixed)
-- No input validation (negative/non-numeric amount, free-text category).
-- Tax rates are duplicated in two methods.
-- main.py crashes on invalid input and loses unsaved data.
-- Corrupt or incomplete JSON crashes load().
+- Category is free text and case/whitespace sensitive (tax silently skipped for "Food").
+- remove(-1) removes the last item; remove(99) crashes main.py.
+- Money uses float.
+- load() crashes on corrupt JSON or missing fields.
+- main.py does not handle exceptions from save().
+- Dev tools (ruff, mypy, pytest-cov) are not pinned; pytest drifts (8.3.3 vs 9.2.0).
+
+## Resolved
+- Tax rates deduplicated into TAX_MULTIPLIERS (commit c50e39b).
+- Amount validation added (commit 1d5fa0d).
+- Atomic JSON save (commit 146e01c).
